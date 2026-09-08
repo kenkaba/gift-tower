@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<title>THE PAIRING GAME — 香りは一瞬。ノートを逃すな。</title>
+<meta name="description" content="言葉は曖昧。香りは正直。一瞬だけ香るノートに合うコロンを選び、ギフトを完成させてリボンを結ぶ。">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f6f1e7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PAIRING">
+<link rel="stylesheet" href="./styles.css?v=0.1.0">
+</head>
+<body class="is-title">
+
+<div id="app">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="flash" aria-hidden="true"></div>
+
+  <!-- 上部: ギフトの進み具合とスプレー残量 -->
+  <header id="topbar">
+    <div class="side gift">
+      <div class="nm">GIFT</div>
+      <div class="pips" id="giftPips" aria-label="ギフトに入ったコロン"><i></i><i></i><i></i></div>
+      <div class="sub">箱に入ったコロン</div>
+    </div>
+    <div class="side you">
+      <div class="nm">SPRAY</div>
+      <div class="pips sprays" id="sprayPips" aria-label="スプレー残り"><i></i><i></i><i></i></div>
+      <div class="sub">スプレー残り</div>
+    </div>
+  </header>
+
+  <div id="gauges">
+    <div class="gauge pairing"><span class="gl">PAIRING</span><div class="bar"><i id="pairFill"></i></div></div>
+    <div class="gauge ribbon"><span class="gl">RIBBON</span><div class="bar"><i id="ribbonFill"></i></div></div>
+  </div>
+
+  <!-- 中央: お客さまの手紙とギフトボックス -->
+  <main id="stage">
+    <div id="letter" class="paper"><span id="letterText">…</span></div>
+
+    <div id="boxWrap">
+      <svg id="box" viewBox="0 0 240 210" aria-label="ギフトボックス">
+        <defs>
+          <linearGradient id="creamG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fbf7ee"/><stop offset="1" stop-color="#efe6d3"/>
+          </linearGradient>
+          <linearGradient id="lidG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fdfaf3"/><stop offset="1" stop-color="#f1e9d8"/>
+          </linearGradient>
+          <pattern id="grosgrain" width="3" height="4" patternUnits="userSpaceOnUse">
+            <rect width="3" height="4" fill="#161616"/><rect y="0" width="3" height="1.2" fill="#2a2a2a"/>
+          </pattern>
+          <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2"/></filter>
+          <filter id="glowF" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+        </defs>
+
+        <!-- 影 -->
+        <ellipse cx="120" cy="196" rx="96" ry="8" fill="#000" opacity="0.08" filter="url(#soft)"/>
+
+        <!-- 箱の中（奥） -->
+        <rect x="46" y="96" width="148" height="12" fill="#e2d7c0"/>
+
+        <!-- ボトル3本（正解ごとに現れる） -->
+        <g id="slots">
+          <g transform="translate(74 64)"><g class="slot" data-i="0">
+            <rect class="glass" x="-14" y="16" width="28" height="52" rx="6" fill="#ffffff" stroke="#d9d0bd" stroke-width="1.5"/>
+            <rect class="liquid" x="-11" y="34" width="22" height="31" rx="4" fill="#e8dcc0" opacity="0.7"/>
+            <rect class="label" x="-10" y="30" width="20" height="24" rx="2" fill="#f6f0e2" stroke="#d9d0bd"/>
+            <circle class="chip" cx="0" cy="42" r="5" fill="#c9a961"/>
+            <rect x="-6" y="8" width="12" height="10" rx="2" fill="#161616"/>
+          </g></g>
+          <g transform="translate(120 64)"><g class="slot" data-i="1">
+            <rect class="glass" x="-14" y="16" width="28" height="52" rx="6" fill="#ffffff" stroke="#d9d0bd" stroke-width="1.5"/>
+            <rect class="liquid" x="-11" y="34" width="22" height="31" rx="4" fill="#e8dcc0" opacity="0.7"/>
+            <rect class="label" x="-10" y="30" width="20" height="24" rx="2" fill="#f6f0e2" stroke="#d9d0bd"/>
+            <circle class="chip" cx="0" cy="42" r="5" fill="#c9a961"/>
+            <rect x="-6" y="8" width="12" height="10" rx="2" fill="#161616"/>
+          </g></g>
+          <g transform="translate(166 64)"><g class="slot" data-i="2">
+            <rect class="glass" x="-14" y="16" width="28" height="52" rx="6" fill="#ffffff" stroke="#d9d0bd" stroke-width="1.5"/>
+            <rect class="liquid" x="-11" y="34" width="22" height="31" rx="4" fill="#e8dcc0" opacity="0.7"/>
+            <rect class="label" x="-10" y="30" width="20" height="24" rx="2" fill="#f6f0e2" stroke="#d9d0bd"/>
+            <circle class="chip" cx="0" cy="42" r="5" fill="#c9a961"/>
+            <rect x="-6" y="8" width="12" height="10" rx="2" fill="#161616"/>
+          </g></g>
+        </g>
+
+        <!-- 箱の本体（手前） -->
+        <g id="body">
+          <rect x="40" y="104" width="160" height="86" rx="5" fill="url(#creamG)" stroke="#d9cfb9" stroke-width="1.5"/>
+          <rect x="110" y="104" width="20" height="86" fill="url(#grosgrain)"/>
+          <rect x="40" y="140" width="160" height="14" fill="url(#grosgrain)"/>
+          <text x="120" y="176" text-anchor="middle" font-size="7" letter-spacing="2.5" fill="#6d665b" font-family="Helvetica Neue, Arial, sans-serif" id="boxBrand">PAIRING</text>
+        </g>
+
+        <!-- フタ（開いている→閉じる） -->
+        <g id="lid">
+          <rect x="34" y="82" width="172" height="26" rx="4" fill="url(#lidG)" stroke="#d9cfb9" stroke-width="1.5"/>
+          <rect x="110" y="82" width="20" height="26" fill="url(#grosgrain)"/>
+        </g>
+
+        <!-- 結ばれたリボン（撃破後） -->
+        <g id="bow">
+          <path d="M120 84 C100 64 84 70 92 84 C98 94 112 90 120 84Z" fill="#161616"/>
+          <path d="M120 84 C140 64 156 70 148 84 C142 94 128 90 120 84Z" fill="#161616"/>
+          <path d="M120 84 L108 106 L114 108 L120 92 L126 108 L132 106Z" fill="#161616"/>
+          <circle cx="120" cy="84" r="5" fill="#2b2b2b"/>
+        </g>
+
+        <!-- 完成のきらめき -->
+        <g id="sparkles">
+          <path class="sp" d="M52 70 l2.5 7 l7 2.5 l-7 2.5 l-2.5 7 l-2.5 -7 l-7 -2.5 l7 -2.5z" fill="#c9a961"/>
+          <path class="sp" d="M190 62 l2 5.5 l5.5 2 l-5.5 2 l-2 5.5 l-2 -5.5 l-5.5 -2 l5.5 -2z" fill="#c9a961"/>
+          <path class="sp" d="M200 150 l1.6 4.5 l4.5 1.6 l-4.5 1.6 l-1.6 4.5 l-1.6 -4.5 l-4.5 -1.6 l4.5 -1.6z" fill="#c9a961"/>
+        </g>
+      </svg>
+
+      <!-- 一瞬だけ香るノート -->
+      <div id="sign" aria-live="polite">
+        <div class="disc"><svg viewBox="0 0 40 40" id="signIcon"></svg></div>
+        <div class="lab" id="signLabel"></div>
+      </div>
+    </div>
+
+    <div id="coach"></div>
+    <div id="timeBar"><i id="timeFill"></i></div>
+  </main>
+
+  <!-- 下部: コロン3本 -->
+  <nav id="controls" aria-label="コロンを選ぶ">
+    <button class="pbtn" data-i="0"><span class="bottle"><span class="tag"><svg viewBox="0 0 40 40"></svg></span></span><span class="lab"></span><span class="nm"></span></button>
+    <button class="pbtn" data-i="1"><span class="bottle"><span class="tag"><svg viewBox="0 0 40 40"></svg></span></span><span class="lab"></span><span class="nm"></span></button>
+    <button class="pbtn" data-i="2"><span class="bottle"><span class="tag"><svg viewBox="0 0 40 40"></svg></span></span><span class="lab"></span><span class="nm"></span></button>
+  </nav>
+
+  <!-- 決着表示 -->
+  <div id="center" aria-live="assertive"><div id="bigText"></div><div id="subText"></div></div>
+
+  <!-- 最後のリボン -->
+  <div id="swipeLayer">
+    <div id="ribbonEnd"><i></i><b></b></div>
+    <div id="swipeHint">▼ リボンを 引いて 結ぶ</div>
+  </div>
+
+  <!-- タイトル -->
+  <section id="title">
+    <div class="titleInner">
+      <div class="kicker" id="titleBrand">SCENT PAIRING ARCADE</div>
+      <h1>THE<br>PAIRING<br>GAME</h1>
+      <p class="tag">言葉は 曖昧。<br><b>香り</b>は 正直。</p>
+      <ol class="rules">
+        <li><b>1</b><span>一瞬だけ香る <em>ノート</em> を見る</span></li>
+        <li><b>2</b><span>同じ素材の <em>コロン</em> を選ぶ</span></li>
+        <li><b>3</b><span>最後に <em>リボン</em> を引いて結ぶ</span></li>
+      </ol>
+      <button id="startBtn" class="cta">タップして はじめる</button>
+      <div id="titleRank" class="rankBox paper"></div>
+      <div class="foot">スプレーは3回まで。景品は 全員に。</div>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section id="result">
+    <div class="resultInner paper">
+      <div class="rKicker" id="rKicker">RESULT</div>
+      <div class="rBadge" id="rBadge">S</div>
+      <div class="rTitle" id="rTitle"></div>
+      <div class="rPrize" id="rPrize"></div>
+      <div class="rPair" id="rPair"></div>
+      <div class="rStats" id="rStats"></div>
+      <div class="rNote">この画面を スタッフに 見せてください</div>
+      <div class="rankBox" id="resultRank"></div>
+      <div class="rBtns">
+        <button id="againBtn" class="cta">もう一度</button>
+        <button id="titleBtn" class="ghost">タイトルへ</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="./game.js?v=0.1.0"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<title>Scented Letters</title>
+<meta name="description" content="手紙に込められた香りを当ててギフトを仕上げる。最後に、今日のあなたに寄り添う重ねづけが届く。">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f8f3ec">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Letters">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="./styles.css?v=0.2.0">
+</head>
+<body class="is-title">
+
+<div id="app">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="glow" aria-hidden="true"></div>
+
+  <!-- 上部: 手紙の封蝋（進み具合）と花びら（残り） -->
+  <header id="top">
+    <div class="seals" id="seals" aria-label="手紙">
+      <i></i><i></i><i></i>
+    </div>
+    <div class="brandline" id="brandline">SCENTED LETTERS</div>
+    <div class="flower" id="flower" aria-label="花びら">
+      <svg viewBox="0 0 48 48">
+        <g class="petals">
+          <ellipse class="petal" data-i="0" cx="24" cy="12" rx="7" ry="11"/>
+          <ellipse class="petal" data-i="1" cx="13" cy="30" rx="7" ry="11" transform="rotate(-60 13 30)"/>
+          <ellipse class="petal" data-i="2" cx="35" cy="30" rx="7" ry="11" transform="rotate(60 35 30)"/>
+        </g>
+        <circle cx="24" cy="24" r="5" fill="#c9a961"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- 中央 -->
+  <main id="stage">
+    <div id="letter" class="paper">
+      <div class="seal"></div>
+      <div class="from" id="letterFrom">一通目の手紙</div>
+      <div class="text" id="letterText">…</div>
+      <div class="reply" id="reply"></div>
+      <div class="time"><i id="timeFill"></i></div>
+    </div>
+
+    <div id="boxWrap">
+      <div id="bloom" aria-live="polite">
+        <div class="wash"></div>
+        <svg viewBox="0 0 80 80" id="bloomIcon"></svg>
+        <div class="lab" id="bloomLabel"></div>
+      </div>
+
+      <svg id="box" viewBox="0 0 240 200" aria-label="ギフトボックス">
+        <defs>
+          <linearGradient id="creamG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfaf4"/><stop offset="1" stop-color="#f0e8d9"/></linearGradient>
+          <linearGradient id="lidG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#f3ecdd"/></linearGradient>
+          <pattern id="grosgrain" width="3" height="4" patternUnits="userSpaceOnUse"><rect width="3" height="4" fill="#1c1a19"/><rect width="3" height="1.2" fill="#2f2c2a"/></pattern>
+          <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.5"/></filter>
+        </defs>
+        <ellipse cx="120" cy="188" rx="92" ry="7" fill="#7a6a50" opacity="0.14" filter="url(#soft)"/>
+        <rect x="46" y="92" width="148" height="12" fill="#e4dac6"/>
+        <g id="slots">
+          <g transform="translate(76 60)"><g class="slot" data-i="0">
+            <rect x="-13" y="16" width="26" height="50" rx="7" fill="#fff" stroke="#dcd3c1" stroke-width="1.4"/>
+            <rect class="liquid" x="-10" y="34" width="20" height="29" rx="5" fill="#e9dcc2" opacity="0.75"/>
+            <rect x="-9" y="29" width="18" height="22" rx="2" fill="#fbf7ee" stroke="#dcd3c1"/>
+            <circle class="chip" cx="0" cy="40" r="4.5" fill="#c9a961"/>
+            <rect x="-5.5" y="8" width="11" height="10" rx="2.5" fill="#1c1a19"/>
+          </g></g>
+          <g transform="translate(120 60)"><g class="slot" data-i="1">
+            <rect x="-13" y="16" width="26" height="50" rx="7" fill="#fff" stroke="#dcd3c1" stroke-width="1.4"/>
+            <rect class="liquid" x="-10" y="34" width="20" height="29" rx="5" fill="#e9dcc2" opacity="0.75"/>
+            <rect x="-9" y="29" width="18" height="22" rx="2" fill="#fbf7ee" stroke="#dcd3c1"/>
+            <circle class="chip" cx="0" cy="40" r="4.5" fill="#c9a961"/>
+            <rect x="-5.5" y="8" width="11" height="10" rx="2.5" fill="#1c1a19"/>
+          </g></g>
+          <g transform="translate(164 60)"><g class="slot" data-i="2">
+            <rect x="-13" y="16" width="26" height="50" rx="7" fill="#fff" stroke="#dcd3c1" stroke-width="1.4"/>
+            <rect class="liquid" x="-10" y="34" width="20" height="29" rx="5" fill="#e9dcc2" opacity="0.75"/>
+            <rect x="-9" y="29" width="18" height="22" rx="2" fill="#fbf7ee" stroke="#dcd3c1"/>
+            <circle class="chip" cx="0" cy="40" r="4.5" fill="#c9a961"/>
+            <rect x="-5.5" y="8" width="11" height="10" rx="2.5" fill="#1c1a19"/>
+          </g></g>
+        </g>
+        <g id="body">
+          <rect x="40" y="100" width="160" height="82" rx="6" fill="url(#creamG)" stroke="#ddd4c2" stroke-width="1.4"/>
+          <rect x="111" y="100" width="18" height="82" fill="url(#grosgrain)"/>
+          <rect x="40" y="134" width="160" height="12" fill="url(#grosgrain)"/>
+          <rect x="146" y="156" width="34" height="16" rx="2" fill="#fbf7ee" stroke="#c9a961" stroke-width="0.8"/>
+          <text x="163" y="167" text-anchor="middle" font-size="6" letter-spacing="1.5" fill="#a88536" font-family="Cormorant Garamond, Georgia, serif" font-style="italic">for you</text>
+        </g>
+        <g id="lid">
+          <rect x="34" y="78" width="172" height="24" rx="5" fill="url(#lidG)" stroke="#ddd4c2" stroke-width="1.4"/>
+          <rect x="111" y="78" width="18" height="24" fill="url(#grosgrain)"/>
+        </g>
+        <g id="bow">
+          <path d="M120 80 C98 60 82 66 90 80 C96 91 111 87 120 80Z" fill="#1c1a19"/>
+          <path d="M120 80 C142 60 158 66 150 80 C144 91 129 87 120 80Z" fill="#1c1a19"/>
+          <path d="M120 80 L109 103 L115 105 L120 89 L125 105 L131 103Z" fill="#1c1a19"/>
+          <circle cx="120" cy="80" r="4.5" fill="#33302d"/>
+        </g>
+        <g id="sparkles">
+          <path class="sp" d="M50 66 l2.5 7 l7 2.5 l-7 2.5 l-2.5 7 l-2.5 -7 l-7 -2.5 l7 -2.5z" fill="#c9a961"/>
+          <path class="sp" d="M192 58 l2 5.5 l5.5 2 l-5.5 2 l-2 5.5 l-2 -5.5 l-5.5 -2 l5.5 -2z" fill="#e3a9b6"/>
+          <path class="sp" d="M204 146 l1.6 4.5 l4.5 1.6 l-4.5 1.6 l-1.6 4.5 l-1.6 -4.5 l-4.5 -1.6 l4.5 -1.6z" fill="#c9a961"/>
+        </g>
+      </svg>
+    </div>
+  </main>
+
+  <!-- 下部: トレイの上のコロン -->
+  <nav id="tray" aria-label="コロンを選ぶ">
+    <button class="pbtn" data-i="0"><span class="bottle"><span class="tag"><svg viewBox="0 0 80 80"></svg></span></span><span class="lab"></span></button>
+    <button class="pbtn" data-i="1"><span class="bottle"><span class="tag"><svg viewBox="0 0 80 80"></svg></span></span><span class="lab"></span></button>
+    <button class="pbtn" data-i="2"><span class="bottle"><span class="tag"><svg viewBox="0 0 80 80"></svg></span></span><span class="lab"></span></button>
+  </nav>
+
+  <!-- そっと出る言葉 -->
+  <div id="whisper" aria-live="polite"><div id="whisperMain"></div><div id="whisperSub"></div></div>
+
+  <!-- リボン -->
+  <div id="ribbonLayer">
+    <div id="ribbonEnd"><i></i><b></b></div>
+    <div id="ribbonHint">そっと 下へ 引いて</div>
+  </div>
+
+  <!-- タイトル -->
+  <section id="title">
+    <div class="titleInner">
+      <div class="eyebrow" id="titleBrand">SCENT PAIRING SALON</div>
+      <h1><span class="en">Scented<br>Letters</span><span class="ja">香りの手紙</span></h1>
+      <p class="lead">手紙に 込められた 香りを あてて、<br>ギフトを 仕上げてください。<br>最後に、今日の あなたに 寄り添う<br>重ねづけが 届きます。</p>
+      <div class="howto">
+        <div><b>1</b><span>ふわりと 浮かぶ <em>香りのしるし</em> を 見て</span></div>
+        <div><b>2</b><span>同じ 素材の <em>コロン</em> を 選ぶ</span></div>
+        <div><b>3</b><span>最後に <em>リボン</em> を 結ぶ</span></div>
+      </div>
+      <button id="startBtn" class="cta">手紙を 受け取る</button>
+      <div class="collectionNote" id="titleCollection"></div>
+      <div class="foot">花びらが 3枚 散ると おしまい。景品は どなたにも。</div>
+    </div>
+  </section>
+
+  <!-- ペアリングカード -->
+  <section id="result">
+    <div class="card paper">
+      <div class="cardTop">
+        <div class="eyebrow">YOUR PAIRING</div>
+        <div class="stampRank" id="rBadge">S</div>
+      </div>
+      <div class="pairName" id="pairName"></div>
+      <div class="pairRow" id="pairRow"></div>
+      <div class="fortune" id="fortune"></div>
+      <div class="cardDivider"></div>
+      <div class="cardStats" id="rStats"></div>
+      <div class="prize"><span class="eyebrow">PRIZE</span><b id="rPrize"></b><small>この画面を スタッフに お見せください</small></div>
+      <div class="collection">
+        <div class="eyebrow">MY COLLECTION</div>
+        <div class="stamps" id="stamps"></div>
+        <div class="collectionMsg" id="collectionMsg"></div>
+      </div>
+      <div class="cardBtns">
+        <button id="againBtn" class="cta">つづけて 遊ぶ</button>
+        <button id="nextBtn" class="ghost">次の方へ</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="./game.js?v=0.2.0"></script>
+</body>
+</html>

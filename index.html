@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<title>Gift Tower</title>
+<meta name="description" content="降りてくるギフトを30秒で積み上げる。ぴったり重なるとPerfect。こぼれたら、おしまい。">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f8f3ec">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Gift Tower">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="./styles.css?v=0.3.0">
+</head>
+<body class="is-title">
+
+<div id="app">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="glow" aria-hidden="true"></div>
+
+  <!-- 上部: 積んだ数・ブランド・残り時間 -->
+  <header id="top">
+    <div class="stat left"><b id="countNum">0</b><span>積んだ数</span></div>
+    <div class="center"><div class="brandline" id="brandline">GIFT TOWER</div><div class="itemName" id="itemName"></div></div>
+    <div class="stat right"><b id="timeNum">30</b><span>のこり秒</span></div>
+  </header>
+
+  <!-- 舞台 -->
+  <main id="stage" aria-label="タップして落とす">
+    <div id="world">
+      <div id="base"><div class="tray"></div><div class="tag">for you</div></div>
+      <div id="items"></div>
+      <div id="topBow"><i></i><i></i><b></b></div>
+    </div>
+    <div id="guide"><i id="guideLine"></i><b id="guideShadow"></b></div>
+    <div id="crane">
+      <div id="ribbonLine"></div>
+      <div id="hanging"></div>
+    </div>
+    <div id="perfectMeter"><i></i></div>
+    <div id="whisper" aria-live="polite"><div id="whisperMain"></div><div id="whisperSub"></div></div>
+    <div id="tapHint">タップで 落とす</div>
+  </main>
+
+  <!-- 下部: 残り時間の線と一言 -->
+  <footer id="foot">
+    <div class="balance" id="balance"><span class="bl">BALANCE</span><div class="track"><i class="lim l"></i><i class="lim r"></i><i class="mid"></i><b id="balanceDot"></b></div><span class="bl" id="balanceText">安定</span></div>
+    <div class="time"><i id="timeFill"></i></div>
+    <div class="note" id="footNote">ぴったり重ねると Perfect。重心が外れると こぼれる。</div>
+  </footer>
+
+  <!-- オープニング（6秒） -->
+  <section id="ad" aria-label="オープニング">
+    <div class="adRibbon"></div>
+    <div class="adRibbon two"></div>
+    <div class="adEyebrow"><span id="adBrandTop">LONDON</span></div>
+    <div class="adScene scentScene" id="adScent">
+      <div class="adBloom"><div class="wash"></div><svg viewBox="0 0 80 80" id="adBloomIcon"></svg></div>
+      <div class="adBottle"><div class="cap"></div><div class="glass"><div class="label"><span class="small">COLOGNE</span><span class="name" id="adScentName">Sea Salt &amp; Bergamot</span></div><div class="liq" id="adLiq"></div></div><div class="shadow"></div></div>
+      <div class="adCaption" id="adScentJa">海の塩と ベルガモット</div>
+    </div>
+    <div class="adScene pairScene" id="adPair">
+      <div class="adBottle small a"><div class="cap"></div><div class="glass"><div class="label"><span class="small">COLOGNE</span><span class="name">Sea Salt<br>&amp; Bergamot</span></div><div class="liq" style="background:#a9dccf"></div></div></div>
+      <div class="adX">×</div>
+      <div class="adBottle small b"><div class="cap"></div><div class="glass"><div class="label"><span class="small">COLOGNE</span><span class="name">Orange<br>Marmalade</span></div><div class="liq" style="background:#f4b563"></div></div></div>
+      <div class="adCaption pairCap"><span class="en">Scent Pairing</span><span class="ja">重ねて、あなただけの 香りに。</span></div>
+    </div>
+    <div class="adScene giftScene" id="adGift">
+      <div class="adGiftBox"><div class="g gift"><span class="bow"><i></i></span></div></div>
+      <div class="adBrand" id="adBrand">JO MALONE LONDON</div>
+      <div class="adTag">a gift, for you</div>
+    </div>
+    <div class="adSkip" id="adSkip">タップで スキップ</div>
+  </section>
+
+  <!-- タイトル -->
+  <section id="title">
+    <div class="titleInner">
+      <div class="eyebrow" id="titleBrand">SCENT PAIRING SALON</div>
+      <h1><span class="en">Gift<br>Tower</span><span class="ja">ギフトを 積み上げて</span></h1>
+      <p class="lead">リボンに 吊られて 降りてくる ギフトを、<br>30秒で どこまで 積み上げられるか。</p>
+      <div class="howto">
+        <div><b>1</b><span>揺れる ギフトを <em>タップで 落とす</em></span></div>
+        <div><b>2</b><span>影の位置に 落ちる。中心が 合えば <em>Perfect</em></span></div>
+        <div><b>3</b><span>重心が 台から 外れると <em>こぼれる</em>。バランス計を 見て</span></div>
+      </div>
+      <button id="startBtn" class="cta">はじめる</button>
+      <div id="titleRank" class="rankBox paper"></div>
+      <div class="foot">景品は どなたにも。高く 積むほど 素敵な ものを。</div>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section id="result">
+    <div class="card paper">
+      <div class="cardTop">
+        <div class="eyebrow" id="rKicker">RESULT</div>
+        <div class="stampRank" id="rBadge">S</div>
+      </div>
+      <div class="bigCount"><b id="rCount">0</b><span>個 積み上げた</span></div>
+      <div class="rTitle" id="rTitle"></div>
+      <div class="cardStats" id="rStats"></div><div class="cardTiers" id="rTiers"></div>
+      <div class="cardDivider"></div>
+      <div class="prize"><span class="eyebrow">PRIZE</span><b id="rPrize"></b><small>この画面を スタッフに お見せください</small></div>
+      <div class="rankBox" id="resultRank"></div>
+      <div class="cardBtns">
+        <button id="againBtn" class="cta">もう一度</button>
+        <button id="nextBtn" class="ghost">次の方へ</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="./game.js?v=0.3.0"></script>
+</body>
+</html>
