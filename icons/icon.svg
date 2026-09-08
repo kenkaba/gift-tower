@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#faf6ee"/><stop offset="1" stop-color="#efe7d8"/></linearGradient>
+    <linearGradient id="box" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#efe6d4"/></linearGradient>
+    <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3ecdd"/></linearGradient>
+    <pattern id="gg" width="6" height="8" patternUnits="userSpaceOnUse"><rect width="6" height="8" fill="#1c1a19"/><rect width="6" height="2.6" fill="#33302d"/></pattern>
+    <pattern id="ggh" width="8" height="6" patternUnits="userSpaceOnUse"><rect width="8" height="6" fill="#1c1a19"/><rect width="2.6" height="6" fill="#33302d"/></pattern>
+    <radialGradient id="glow" cx="50%" cy="42%" r="55%"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+  <!-- 影 -->
+  <ellipse cx="256" cy="446" rx="150" ry="16" fill="#6a5a45" opacity="0.22" filter="url(#sh)"/>
+  <!-- 箱 -->
+  <rect x="100" y="214" width="312" height="216" rx="10" fill="url(#box)" stroke="#d9cfbd" stroke-width="3"/>
+  <rect x="226" y="214" width="60" height="216" fill="url(#gg)"/>
+  <rect x="100" y="302" width="312" height="40" fill="url(#ggh)"/>
+  <!-- フタ -->
+  <rect x="84" y="176" width="344" height="52" rx="9" fill="url(#lid)" stroke="#d9cfbd" stroke-width="3"/>
+  <rect x="226" y="176" width="60" height="52" fill="url(#gg)"/>
+  <!-- 蝶結び -->
+  <path d="M256 180 C206 132 166 146 184 180 C198 206 236 196 256 180Z" fill="#1c1a19"/>
+  <path d="M256 180 C306 132 346 146 328 180 C314 206 276 196 256 180Z" fill="#1c1a19"/>
+  <path d="M256 180 L228 236 L244 240 L256 202 L268 240 L284 236Z" fill="#1c1a19"/>
+  <ellipse cx="256" cy="180" rx="13" ry="11" fill="#3a3633"/>
+  <path d="M206 158 C226 150 240 160 250 172" fill="none" stroke="#4a4644" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <path d="M306 158 C286 150 272 160 262 172" fill="none" stroke="#4a4644" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <!-- 金のタグ -->
+  <rect x="318" y="372" width="70" height="30" rx="4" fill="#fbf7ee" stroke="#c9a961" stroke-width="3"/>
+  <circle cx="331" cy="387" r="4" fill="#c9a961"/>
+  <rect x="342" y="384" width="36" height="6" rx="3" fill="#c9a961" opacity="0.9"/>
+</svg>
