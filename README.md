@@ -1,5 +1,7 @@
 # Gift Tower — ギフトを積み上げて
 
+**遊ぶ → https://kenkaba.github.io/gift-tower/**（GitHub Pages、`main` のルートを配信）
+
 > リボンに吊られて降りてくるギフトを、30秒でどこまで積み上げられるか。
 
 ジョー マローン ロンドンの展示会・ポップアップ向けゲーム。1プレイ30秒＋結果。
@@ -73,6 +75,15 @@ v0.3 で全貌を変更した（v0.1 = `legacy-v0.1/`、v0.2「香りの手紙�
 - `items`: 落ちてくる商品（幅・高さ・見た目のHTML・出やすさ）。見た目のクラスは `styles.css` の `.g.box / .g.candle / .g.jar / .g.bottle / .g.gift`
 - `duration` / `tiers`（精度のしきい値）/ `swayBelow`（警告の余裕）/ `guide`（ガイドの表示）/ `swing`: 難度
 - `ranks` / `prizes` / `brand`
+
+## 更新方法
+
+```bash
+cd ~/pairing-game
+git add -A && git commit -m "..." && git push
+```
+
+push から1〜2分で反映される。
 
 ## ローカルで動かす
 
